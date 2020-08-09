@@ -6,34 +6,6 @@ import { Emoji, Button, Container, Title, Text } from "./styleComponents"
 
 
 class App extends React.Component {
-  constructor() {
-    super();
-    const params = this.getHashParams();
-    this.state = {
-      loggedIn: params.access_token ? true : false,
-      token: params.access_token
-    }
-  }
-
-  // componentDidMount() {
-  //   console.log(this.state.token)
-  //   fetch('https://api.spotify.com/v1/me',
-  //     { headers: { 'Authorization': 'Bearer ' + this.state.token } })
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
-  // }
-
-  getHashParams() {
-    var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-      q = window.location.hash.substring(1);
-    e = r.exec(q)
-    while (e) {
-      hashParams[e[1]] = decodeURIComponent(e[2]);
-      e = r.exec(q);
-    }
-    return hashParams;
-  }
 
   render() {
     return (
