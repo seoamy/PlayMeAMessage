@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import CreatePlaylist from "./CreatePlaylist"
+import CreatePlaylistView from "./views/CreatePlaylistView"
 import { Emoji, Button, Container, Title, Text } from "./styleComponents"
 
 
@@ -27,7 +27,7 @@ class App extends React.Component {
               </Container>
             </Route>
             <Route path="/createPlaylist">
-              <CreatePlaylist></CreatePlaylist>
+              <CreatePlaylistView></CreatePlaylistView>
             </Route>
           </Switch>
         </Router>

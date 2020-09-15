@@ -1,10 +1,11 @@
 import React from "react";
-import { Container, Title, Input } from "./styleComponents"
+import { Container, Title, Input } from "../styleComponents"
+import { getHashParams, searchForSong } from "../createPlaylistFunctions"
 
-export default class CreatePlaylist extends React.Component {
+export default class CreatePlaylistView extends React.Component {
     constructor() {
         super();
-        const params = this.getHashParams();
+        const params = getHashParams();
         this.state = {
             accessToken: params.access_token,
             userID: null,
@@ -18,57 +19,14 @@ export default class CreatePlaylist extends React.Component {
         this.handleMessageChange = this.handleMessageChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.createPlaylist = this.createPlaylist.bind(this);
-        this.searchForSong = this.searchForSong.bind(this);
         this.addSongsToPlaylist = this.addSongsToPlaylist.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.state.accessToken)
         fetch('https://api.spotify.com/v1/me',
             { headers: { 'Authorization': 'Bearer ' + this.state.accessToken } })
             .then(response => response.json())
             .then(data => this.setState({ userID: data.id }))
-    }
-
-    getHashParams() {
-        var hashParams = {};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        e = r.exec(q)
-        while (e) {
-            hashParams[e[1]] = decodeURIComponent(e[2]);
-            e = r.exec(q);
-        }
-        return hashParams;
-    }
-
-    async searchForSong(title) {
-        // get songs with title as search query
-        let response = await fetch('https://api.spotify.com/v1/search?q=' + title +
-            '&type=track&market=US&limit=25', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + this.state.accessToken,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-
-        // extract array of track item objects from response
-        let data = await response.json()
-        let songs = data.tracks.items;
-        console.log(songs)
-
-        // iterate through songs to find an exact title match
-        let length = songs.length;
-        for (var i = 0; i < length; i++) {
-            if ((songs[i].name).toUpperCase() === title.toUpperCase()) {
-                console.log(songs[i].uri)
-                return songs[i].uri;
-            }
-        }
-        // return null if no matches are found
-        return null;
     }
 
     createPlaylist(songIDs) {
@@ -109,6 +67,7 @@ export default class CreatePlaylist extends React.Component {
         })
     }
 
+
     async handleSubmit(event) {
         if (this.state.playlistTitle === "" || this.state.message === "") {
             alert("You must have a playlist title and message!")
@@ -117,9 +76,16 @@ export default class CreatePlaylist extends React.Component {
         let mLength = this.state.message.length;
         let songIDs = [];
 
-        // get songIDs for all tracks (do this first so a playlist isnt created before the message is validated)
+        // ******************************************************************************************************************
+        // ******************************************************************************************************************
+        // ******************************************************************************************************************
+        // TODO: get songIDs for all tracks (do this first so a playlist isnt created before the message is validated)
+        //       figure out how to get different combinations/substrings of the string 
+        // ******************************************************************************************************************
+        // ******************************************************************************************************************
+        // ******************************************************************************************************************
         for (var i = 0; i < mLength; i++) {
-            let id = await this.searchForSong(this.state.message[i]);
+            let id = await searchForSong(this.state.message[i]);
             console.log(id)
             if (id == null) {
                 alert('Spotify could not find a song with the title ' + this.state.message[i] + '.');
@@ -128,10 +94,15 @@ export default class CreatePlaylist extends React.Component {
             }
             songIDs.push(id);
         }
-
-        this.createPlaylist(songIDs);
+        if (songIDs.length) {
+            this.createPlaylist(songIDs);
+        }
+        else {
+            alert("You must add a message to populate your playlist!") // TODO: Keep playlist title and description states
+        }
     }
 
+    // TODO: Redux state management
     handleTitleChange(event) {
         this.setState({ playlistTitle: event.target.value })
     }
@@ -143,8 +114,6 @@ export default class CreatePlaylist extends React.Component {
     handleMessageChange(event) {
         this.setState({ message: event.target.value.split(" ") })
     }
-
-
 
     render() {
         return (
