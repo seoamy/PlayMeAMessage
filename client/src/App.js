@@ -22,7 +22,7 @@ class App extends React.Component {
                 <Title>Play me a message.</Title>
                 <Text>We will curate a playlist with song titles that match each word in your message. Perfect for gifting someone a playlist <Emoji symbol="❤️"></Emoji></Text>
                 <Button>
-                  <a href='http://localhost:8888'> Login to Spotify </a>
+                  <a href='http://localhost:8888/login'> Login to Spotify </a>
                 </Button>
               </Container>
             </Route>
