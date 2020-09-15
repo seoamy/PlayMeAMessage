@@ -1,5 +1,5 @@
 import React from "react";
-import { Emoji, Button, Container, Title, Text, Input } from "./styleComponents"
+import { Container, Title, Input } from "./styleComponents"
 
 export default class CreatePlaylist extends React.Component {
     constructor() {
@@ -62,7 +62,7 @@ export default class CreatePlaylist extends React.Component {
         // iterate through songs to find an exact title match
         let length = songs.length;
         for (var i = 0; i < length; i++) {
-            if ((songs[i].name).toUpperCase() == title.toUpperCase()) {
+            if ((songs[i].name).toUpperCase() === title.toUpperCase()) {
                 console.log(songs[i].uri)
                 return songs[i].uri;
             }

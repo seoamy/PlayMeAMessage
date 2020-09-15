@@ -1,21 +1,13 @@
-/**
- * This is an example of a basic node.js script that performs
- * the Authorization Code oAuth2 flow to authenticate against
- * the Spotify Accounts.
- *
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
- */
-
-var express = require("express"); // Express web server framework
-var request = require("request"); // "Request" library
+var express = require("express");
+var request = require("request");
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
 
-var client_id = '200a54a22fa3435aa083099a2d14d12a'; // Your client id
-var client_secret = '96f685a6a51b4f32b594e24710429ce3'; // Your secret
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+var client_id = '200a54a22fa3435aa083099a2d14d12a'; // client id
+var client_secret = '96f685a6a51b4f32b594e24710429ce3'; // secret
+var redirect_uri = 'http://localhost:8888/callback'; // redirect uri
+var redirect_to_client_uri = "http://localhost:3000/createPlaylist" // redirect to client uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -107,8 +99,7 @@ app.get("/callback", function (req, res) {
                 });
 
                 // we can also pass the token to the browser to make requests from there
-                res.redirect(
-                    "/#" +
+                res.redirect(redirect_to_client_uri + "/#" +
                     querystring.stringify({
                         access_token: access_token,
                         refresh_token: refresh_token
@@ -138,6 +129,7 @@ app.get("/refresh_token", function (req, res) {
         },
         form: {
             grant_type: "refresh_token",
+            redirect_uri: redirect_to_client_uri,
             refresh_token: refresh_token
         },
         json: true
