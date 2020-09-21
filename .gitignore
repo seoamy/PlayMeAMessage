@@ -6,6 +6,9 @@ venv/
 /.pnp
 .pnp.js
 
+# api keys
+/config.js
+
 # testing
 /coverage
 

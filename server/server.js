@@ -3,11 +3,12 @@ var request = require("request");
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
+var config = require('./config')
 
-var client_id = '200a54a22fa3435aa083099a2d14d12a'; // client id
-var client_secret = '96f685a6a51b4f32b594e24710429ce3'; // secret
-var redirect_uri = 'http://localhost:8888/callback'; // redirect uri
-var redirect_to_client_uri = "http://localhost:3000/createPlaylist" // redirect to client uri
+var client_id = config.client_id
+var client_secret = config.client_secret
+var redirect_uri = config.redirect_uri
+var redirect_to_client_uri = config.redirect_to_client_uri
 
 /**
  * Generates a random string containing numbers and letters
