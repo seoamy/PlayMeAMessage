@@ -1,11 +1,11 @@
 /* fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla&display=swap');
 /* styles */
 a:hover, a:visited, a:link, a:active
 {
     text-decoration: none;
     color: white;
     font-weight: 700;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Karla', sans-serif;
 }
