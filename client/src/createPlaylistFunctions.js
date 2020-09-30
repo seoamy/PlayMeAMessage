@@ -11,6 +11,30 @@ export function getHashParams() {
     return hashParams;
 }
 
+export function getOrderedCombos(sentence) {
+    if (sentence.length == 1) {
+        return sentence
+    }
+    else if (sentence.length == 2) {
+        return [[sentence[0] + ' ' + sentence[1]], [sentence[0], sentence[1]]]
+    }
+
+    var combos = []
+    var left = sentence.shift()
+    var result = getOrderedCombos(sentence)
+
+    let r = result.length
+    for (let i = 0; i < r; i++) {
+        var combineCopy = result[i].slice(1)
+        combineCopy.unshift(left + ' ' + result[i][0])
+        combos.push(combineCopy)
+        var addFrontCopy = result[i].slice(0)
+        addFrontCopy.unshift(left)
+        combos.push(addFrontCopy)
+    }
+    return combos
+}
+
 export async function searchForSong(title, accessToken) {
     // get songs with title as search query
     let response = await fetch('https://api.spotify.com/v1/search?q=' + title +

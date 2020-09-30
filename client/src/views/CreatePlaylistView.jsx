@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Title, Input } from "../styleComponents"
-import { getHashParams, searchForSong } from "../createPlaylistFunctions"
+import { Container, Title, Input, InputTitle } from "../styleComponents"
+import { getHashParams, searchForSong, getOrderedCombos } from "../createPlaylistFunctions"
 
 export default class CreatePlaylistView extends React.Component {
     constructor() {
@@ -23,6 +23,7 @@ export default class CreatePlaylistView extends React.Component {
     }
 
     componentDidMount() {
+        // get user's access token/id
         fetch('https://api.spotify.com/v1/me',
             { headers: { 'Authorization': 'Bearer ' + this.state.accessToken } })
             .then(response => response.json())
@@ -71,35 +72,11 @@ export default class CreatePlaylistView extends React.Component {
     async handleSubmit(event) {
         if (this.state.playlistTitle === "" || this.state.message === "") {
             alert("You must have a playlist title and message!")
+            return
         }
 
-        let mLength = this.state.message.length;
-        let songIDs = [];
+        let combos = getOrderedCombos(this.state.message)
 
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // TODO: get songIDs for all tracks (do this first so a playlist isnt created before the message is validated)
-        //       figure out how to get different combinations/substrings of the string 
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        // ******************************************************************************************************************
-        for (var i = 0; i < mLength; i++) {
-            let id = await searchForSong(this.state.message[i]);
-            console.log(id)
-            if (id == null) {
-                alert('Spotify could not find a song with the title ' + this.state.message[i] + '.');
-                this.setState({ message: [] })
-                return;
-            }
-            songIDs.push(id);
-        }
-        if (songIDs.length) {
-            this.createPlaylist(songIDs);
-        }
-        else {
-            alert("You must add a message to populate your playlist!") // TODO: Keep playlist title and description states
-        }
     }
 
     // TODO: Redux state management
@@ -118,31 +95,34 @@ export default class CreatePlaylistView extends React.Component {
     render() {
         return (
             <div style={{
-                backgroundColor: "#CCF3FF",
+                backgroundColor: "#EA6654",
                 width: "100%",
                 height: "100vh"
             }}>
                 <Container>
+                    <Title>Let's Make Your Playlist!</Title>
                     <form onSubmit={this.handleSubmit}>
-                        <label><Title>Playlist title:</Title></label>
+                        <label><InputTitle>Playlist title:</InputTitle></label>
                         <Input type="text" onChange={this.handleTitleChange}></Input>
-                        <label><Title>Playlist description:</Title></label>
+                        <label><InputTitle>Playlist description:</InputTitle></label>
                         <Input type="text" onChange={this.handleDescriptionChange} />
-                        <label><Title>Message in playlist:</Title></label>
+                        <label><InputTitle>Message in playlist:</InputTitle></label>
                         <Input type="text" onChange={this.handleMessageChange} />
-                        <input type="submit" value="generate my playlist"
+                        <input type="submit" value="Generate my playlist"
                             style={{
                                 margin: "50px",
-                                backgroundColor: "#FF6D90",
+                                backgroundColor: "#3E2D2D",
                                 border: "none",
                                 color: "white",
                                 borderRadius: "50px",
                                 width: "300px",
                                 height: "70px",
                                 fontSize: "20px",
-                                boxShadow: "5px 7px 3px #8888",
+                                boxShadow: "5px 7px 10px #403D3D",
                                 transition: "0.25s all ease",
-                                fontFamily: "Poppins, sans-serif"
+                                fontFamily: "Karla, sans-serif",
+                                display: "flex",
+                                justifyContent: "center"
                             }}
                         />
                     </form>
