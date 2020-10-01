@@ -12,10 +12,10 @@ export function getHashParams() {
 }
 
 export function getOrderedCombos(sentence) {
-    if (sentence.length == 1) {
+    if (sentence.length === 1) {
         return sentence
     }
-    else if (sentence.length == 2) {
+    else if (sentence.length === 2) {
         return [[sentence[0] + ' ' + sentence[1]], [sentence[0], sentence[1]]]
     }
 
@@ -38,7 +38,7 @@ export function getOrderedCombos(sentence) {
 export async function searchForSong(title, accessToken) {
     // get songs with title as search query
     let response = await fetch('https://api.spotify.com/v1/search?q=' + title +
-        '&type=track&market=US&limit=25', {
+        '&type=track&market=US&limit=10', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + accessToken,
@@ -62,4 +62,5 @@ export async function searchForSong(title, accessToken) {
     }
     // return null if no matches are found
     return null;
+
 }

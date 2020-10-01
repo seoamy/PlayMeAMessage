@@ -51,6 +51,7 @@ export default class CreatePlaylistView extends React.Component {
     }
 
     addSongsToPlaylist(songIDs) {
+        console.log(songIDs)
         if (this.state.playlistID == null || this.state.userID == null) return;
 
         // add all tracks to the playlist
@@ -76,6 +77,36 @@ export default class CreatePlaylistView extends React.Component {
         }
 
         let combos = getOrderedCombos(this.state.message)
+        var songIDs = []
+
+        if (combos.length === 1) {
+            songIDs = await searchForSong(combos[0], this.state.accessToken)
+            this.createPlaylist([songIDs])
+            return;
+        }
+
+        else {
+            for (let i = 0; i < combos.length; i++) {
+                songIDs = []
+                let length = combos[i].length
+                for (let j = 0; j < length; j++) {
+                    console.log(combos[i][j])
+                    let songID = await searchForSong(combos[i][j], this.state.accessToken)
+                    if (!songID) {
+                        songIDs = []
+                        break
+                    }
+                    songIDs.push(songID)
+                    if (songIDs.length === j + 1 && j + 1 === combos[i].length) i = combos.length;
+                }
+            }
+        }
+
+        if (songIDs.length === 0) {
+            alert('We could not find songs to match your message')
+            return
+        }
+        this.createPlaylist(songIDs)
 
     }
 
