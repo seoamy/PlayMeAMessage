@@ -1,0 +1,7 @@
+module.exports = {
+  "client_id": "YOUR CLIENT ID HERE",
+  "client_secret": "YOUR CLIENT SECRET HERE",
+
+  "redirect_uri": "http://localhost:8888/callback",
+  "redirect_to_client_uri": "http://localhost:3000/createPlaylist",
+};

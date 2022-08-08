@@ -1,4 +1,4 @@
-  
+
 #dependencies
 venv/
 .idea/
@@ -7,7 +7,7 @@ venv/
 .pnp.js
 
 # api keys
-/config.js
+config.js
 
 # testing
 /coverage

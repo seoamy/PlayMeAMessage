@@ -16,4 +16,6 @@ open a new tab on your terminal and ``` cd server ```
 
 ``` yarn ``` to install all dependencies for the server
 
+Follow [the instructions here](https://developer.spotify.com/documentation/general/guides/authorization/app-settings/) to create a Spotify application.  Rename `config.js.example` to `config.js` and fill in `client_id` and `client_secret` with the values for your new application.
+
 ``` node server.js ``` so that express is now listening on port 8888!
